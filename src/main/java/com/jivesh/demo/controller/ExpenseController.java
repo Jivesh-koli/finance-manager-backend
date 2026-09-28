@@ -2,11 +2,14 @@ package com.jivesh.demo.controller;
 
 
 import com.jivesh.demo.dto.ExpenseRequest;
+import com.jivesh.demo.dto.ExpenseResponse;
 import com.jivesh.demo.entity.Expense;
 import com.jivesh.demo.service.ExpenseService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.DeleteMapping;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,19 +27,18 @@ public class ExpenseController {
     }
 
     @PostMapping("/expenses")
-    public Expense createExpense(@RequestBody ExpenseRequest request) {
+    public ExpenseResponse createExpense(@RequestBody ExpenseRequest request) {
         
         Expense expense = new Expense();
-
         expense.setAmount(request.getAmount());
         expense.setCategory(request.getCategory());
         expense.setDescription(request.getDescription());
         expense.setDate(request.getDate());
 
-        return expenseService.addExpenseToUser(
-                request.getUserId(),
-                expense
-        );
+        Expense saved = expenseService.addExpenseToUser(request.getUserId(), expense);
+        return toResponse(saved);
+
+
     }
     @GetMapping("/expenses/{id}")
     public Expense getExpenseById(@PathVariable Long id) {
@@ -55,13 +57,35 @@ public class ExpenseController {
     }
 
     @GetMapping("/users/{userId}/expenses")
-    public List<Expense> getExpensesByUserId(@PathVariable Long userId) {
-        return expenseService.getExpensesByUserId(userId);
+    public List<ExpenseResponse> getExpensesByUserId(@PathVariable Long userId) {
+
+        List<Expense> expenses = expenseService.getExpensesByUserId(userId);
+        List<ExpenseResponse> responses = new ArrayList<>();
+
+        for (Expense expense : expenses) {
+            responses.add(toResponse(expense));
+        }
+
+        return responses;
     }
 
     @GetMapping("/expenses/category/{category}")
     public List<Expense> getExpensesByCategory(@PathVariable String category) {
         return expenseService.getExpensesByCategory(category);
+    }
+
+    private ExpenseResponse toResponse(Expense e) {
+
+        ExpenseResponse response = new ExpenseResponse();   // naya dabba
+
+        response.setId(e.getId());
+        response.setAmount(e.getAmount());
+        response.setCategory(e.getCategory());
+        response.setUserId(e.getUser().getId());
+        response.setDescription(e.getDescription());
+        response.setDate(e.getDate());
+
+        return response;
     }
 
 
