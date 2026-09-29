@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
+// here i did import com.jivesh.demo.Expense.ExpenseNotFoundException; it was ment to be done in service file so rembmber to fix it
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +24,15 @@ public class ExpenseController {
     }
 
     @GetMapping("/expenses")
-    public List<Expense> getExpenses() {
-        return expenseService.getAllExpenses();
+    public List<ExpenseResponse> getAllExpenses() {
+        List<Expense> expenses = expenseService.getAllExpenses();
+        List<ExpenseResponse> responses = new ArrayList<>();
+
+        for (Expense expense : expenses) {
+            responses.add(toResponse(expense));
+        }
+
+        return responses;
     }
 
     @PostMapping("/expenses")
@@ -41,8 +50,9 @@ public class ExpenseController {
 
     }
     @GetMapping("/expenses/{id}")
-    public Expense getExpenseById(@PathVariable Long id) {
-        return expenseService.getExpenseById(id);
+    public ExpenseResponse getExpenseById(@PathVariable Long id) {
+        Expense expense = expenseService.getExpenseById(id);
+        return toResponse(expense);
     }
 
     @PutMapping("/expenses/{id}")

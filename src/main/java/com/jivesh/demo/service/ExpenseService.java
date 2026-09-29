@@ -8,6 +8,8 @@ import java.util.List;
 import com.jivesh.demo.entity.User;
 import com.jivesh.demo.repository.UserRepository;
 
+import com.jivesh.demo.Expense.ExpenseNotFoundException;
+
 import java.math.BigDecimal;
 
 @Service
@@ -55,7 +57,7 @@ public class ExpenseService {
     public Expense updateExpense(Long id, Expense updatedExpense) {
 
         Expense expense = expenseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Expense not found"));
+                .orElseThrow(() -> new ExpenseNotFoundException(id));
 
         expense.setAmount(updatedExpense.getAmount());
         expense.setCategory(updatedExpense.getCategory());
@@ -67,7 +69,11 @@ public class ExpenseService {
     }
 
     public void deleteExpense(Long id) {
+
         expenseRepository.deleteById(id);
+        Expense expense = getExpenseById(id);   // yahi 404 fenkega agar nahi mila
+        expenseRepository.delete(expense);
+
     }
 
     public List<Expense> getAllExpenses() {
@@ -75,7 +81,8 @@ public class ExpenseService {
     }
 
     public Expense getExpenseById(Long id) {
-        return expenseRepository.findById(id).orElse(null);
+        return expenseRepository.findById(id)
+                .orElseThrow(() -> new ExpenseNotFoundException(id));
     }
 
     public Expense addExpenseToUser(Long userId, Expense expense) {
