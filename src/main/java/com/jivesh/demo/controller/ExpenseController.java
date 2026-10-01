@@ -3,11 +3,14 @@ package com.jivesh.demo.controller;
 
 import com.jivesh.demo.dto.ExpenseRequest;
 import com.jivesh.demo.dto.ExpenseResponse;
+import com.jivesh.demo.dto.ExpenseUpdateRequest;
 import com.jivesh.demo.entity.Expense;
 import com.jivesh.demo.service.ExpenseService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.http.HttpStatus;
 
 // here i did import com.jivesh.demo.Expense.ExpenseNotFoundException; it was ment to be done in service file so rembmber to fix it
 
@@ -36,7 +39,7 @@ public class ExpenseController {
     }
 
     @PostMapping("/expenses")
-    public ExpenseResponse createExpense(@RequestBody ExpenseRequest request) {
+    public ExpenseResponse createExpense(@Valid @RequestBody ExpenseRequest request) {
         
         Expense expense = new Expense();
         expense.setAmount(request.getAmount());
@@ -56,12 +59,13 @@ public class ExpenseController {
     }
 
     @PutMapping("/expenses/{id}")
-    public Expense updateExpense(@PathVariable Long id,
-                                 @RequestBody Expense expense) {
-        return expenseService.updateExpense(id, expense);
+    public ExpenseResponse updateExpense(@PathVariable Long id,
+                                         @RequestBody @Valid  ExpenseUpdateRequest request) {
+        return toResponse(expenseService.updateExpense(id, request));
     }
 
     @DeleteMapping("/expenses/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteExpense(@PathVariable Long id) {
         expenseService.deleteExpense(id);
     }

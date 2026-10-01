@@ -1,6 +1,8 @@
 package com.jivesh.demo.service;
 
 import com.jivesh.demo.dto.ExpenseRequest;
+
+import com.jivesh.demo.dto.ExpenseUpdateRequest;
 import com.jivesh.demo.entity.Expense;
 import com.jivesh.demo.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
@@ -54,23 +56,20 @@ public class ExpenseService {
         return expenseRepository.save(expense);
     }
 
-    public Expense updateExpense(Long id, Expense updatedExpense) {
+    public Expense updateExpense(Long id, ExpenseUpdateRequest request) {
+        Expense expense = getExpenseById(id);   // nahi mila to 404
 
-        Expense expense = expenseRepository.findById(id)
-                .orElseThrow(() -> new ExpenseNotFoundException(id));
-
-        expense.setAmount(updatedExpense.getAmount());
-        expense.setCategory(updatedExpense.getCategory());
-        expense.setDescription(updatedExpense.getDescription());
-        expense.setDate(updatedExpense.getDate());
+        expense.setAmount(request.getAmount());
+        expense.setCategory(request.getCategory());
+        expense.setDescription(request.getDescription());
+        expense.setDate(request.getDate());
 
         return expenseRepository.save(expense);
-
     }
 
-    public void deleteExpense(Long id) {
 
-        expenseRepository.deleteById(id);
+
+    public void deleteExpense(Long id) {
         Expense expense = getExpenseById(id);   // yahi 404 fenkega agar nahi mila
         expenseRepository.delete(expense);
 
