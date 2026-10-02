@@ -8,9 +8,20 @@ import java.time.LocalDateTime;
 
 public class ExpenseRequest {
 
-    @NotNull
-    @Positive
+    @NotBlank(message = "add some Title to it")
+    private String title;
+
+    @NotNull(message = "add some amount")
+    @Positive(message = "keep the Amount positive")
     private BigDecimal amount;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(){
+        this.title = title;
+    }
 
     @NotBlank
     private String category;
