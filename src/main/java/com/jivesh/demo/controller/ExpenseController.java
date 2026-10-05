@@ -40,17 +40,8 @@ public class ExpenseController {
 
     @PostMapping("/expenses")
     public ExpenseResponse createExpense(@Valid @RequestBody ExpenseRequest request) {
-        
-        Expense expense = new Expense();
-        expense.setAmount(request.getAmount());
-        expense.setCategory(request.getCategory());
-        expense.setDescription(request.getDescription());
-        expense.setDate(request.getDate());
-
-        Expense saved = expenseService.addExpenseToUser(request.getUserId(), expense);
+        Expense saved = expenseService.addExpenseToUser(request.getUserId(), request);
         return toResponse(saved);
-
-
     }
     @GetMapping("/expenses/{id}")
     public ExpenseResponse getExpenseById(@PathVariable Long id) {
@@ -83,10 +74,6 @@ public class ExpenseController {
         return responses;
     }
 
-    @GetMapping("/expenses/category/{category}")
-    public List<Expense> getExpensesByCategory(@PathVariable String category) {
-        return expenseService.getExpensesByCategory(category);
-    }
 
     private ExpenseResponse toResponse(Expense e) {
 

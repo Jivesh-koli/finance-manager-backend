@@ -25,19 +25,6 @@ public class ExpenseService {
         this.userRepository = userRepository;
     }
 
-    public Expense saveExpense(Expense expense) {
-
-        if (expense.getAmount().compareTo(BigDecimal.ZERO) < 0) {
-            throw new RuntimeException("Amount cannot be negative");
-        }
-
-        User user = userRepository.findById(1L)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        expense.setUser(user);
-
-        return expenseRepository.save(expense);
-    }
 
     public Expense addExpenseToUser(Long userId, ExpenseRequest request) {
 
@@ -84,22 +71,9 @@ public class ExpenseService {
                 .orElseThrow(() -> new ExpenseNotFoundException(id));
     }
 
-    public Expense addExpenseToUser(Long userId, Expense expense) {
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        expense.setUser(user);
-
-        return expenseRepository.save(expense);
-    }
-
     public List<Expense> getExpensesByUserId(Long userId) {
         return expenseRepository.findByUserId(userId);
     }
 
-    public List<Expense> getExpensesByCategory(String category) {
-        return expenseRepository.findByCategory(category);
-    }
 
 }
