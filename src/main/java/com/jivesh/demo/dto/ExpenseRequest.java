@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+
 public class ExpenseRequest {
 
     @NotBlank(message = "add some Title to it")
@@ -15,13 +16,7 @@ public class ExpenseRequest {
     @Positive(message = "keep the Amount positive")
     private BigDecimal amount;
 
-    public String getTitle() {
-        return title;
-    }
 
-    public void setTitle(){
-        this.title = title;
-    }
 
     @NotBlank
     private String category;
@@ -48,4 +43,12 @@ public class ExpenseRequest {
 
     public Long getUserId() { return userId; }
     public void setUserId(Long userId) { this.userId = userId; }
+
+    public String getTitle() {return title;}
+    public void setTitle(String title) {this.title = title;}
+
+
 }
+
+
+

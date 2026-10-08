@@ -10,10 +10,9 @@ public class ExpenseResponse {
     private String description;
     private LocalDateTime date;
     private Long userId;
+    private String title;
 
-    public LocalDateTime getDate() {
-        return date;
-    }
+
 
     public void setId(Long id) {
         this.id = id;
@@ -39,6 +38,12 @@ public class ExpenseResponse {
         this.userId = userId;
     }
 
+    public String getTitle() { return title; }
+
+
+
+    public void setTitle(String title) { this.title = title; }
+
     public Long getId() {
         return id;
     }
@@ -58,4 +63,9 @@ public class ExpenseResponse {
     public Long getUserId() {
         return userId;
     }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
 }

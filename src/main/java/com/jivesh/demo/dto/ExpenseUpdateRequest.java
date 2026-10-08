@@ -17,11 +17,18 @@ public class ExpenseUpdateRequest {
 
     private String description;
 
+
     @NotNull
     private LocalDateTime date;
 
+    @NotBlank
+    private String title;
+
     public BigDecimal getAmount() { return amount; }
     public void setAmount(BigDecimal amount) { this.amount = amount; }
+
+    public String getTitle() {return title;}
+    public void setTitle( String title) {this.title = title;}
 
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
@@ -31,4 +38,7 @@ public class ExpenseUpdateRequest {
 
     public LocalDateTime getDate() { return date; }
     public void setDate(LocalDateTime date) { this.date = date; }
+
+
+
 }

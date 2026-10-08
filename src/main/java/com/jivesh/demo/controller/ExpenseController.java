@@ -80,11 +80,13 @@ public class ExpenseController {
         ExpenseResponse response = new ExpenseResponse();   // naya dabba
 
         response.setId(e.getId());
+        response.setTitle(e.getTitle());
         response.setAmount(e.getAmount());
         response.setCategory(e.getCategory());
         response.setUserId(e.getUser().getId());
         response.setDescription(e.getDescription());
         response.setDate(e.getDate());
+
 
         return response;
     }

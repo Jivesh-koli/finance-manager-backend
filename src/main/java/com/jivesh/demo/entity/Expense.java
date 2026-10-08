@@ -19,7 +19,10 @@ public class Expense {
     private BigDecimal amount;
     private String category;
     private String description;
+    private String title;
     private LocalDateTime date;
+
+
 
     @ManyToOne
     private User user;
@@ -52,6 +55,9 @@ public class Expense {
         return user;
     }
 
+    public String getTitle() { return title; }
+
+
     // Setters
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
@@ -72,6 +78,12 @@ public class Expense {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) { this.title = title; }
 
 
 }
